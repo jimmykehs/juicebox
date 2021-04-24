@@ -49,8 +49,15 @@ postsRouter.get('/', async (req, res) => {
         const posts = allPosts.filter(post => {
             return post.active || (req.user && post.author.id === req.user.id)
         })
-
+        if(posts) {
         res.send({ posts });
+        }
+        else {
+            next({
+                name: 'PostError',
+                message: 'Could not get posts'
+            })
+        }
     } catch ({name, message}){
         next({ name, message });
     }
